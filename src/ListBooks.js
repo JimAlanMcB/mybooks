@@ -18,6 +18,9 @@ class ListBooks extends Component {
     }
     render() {
         const { books } = this.props
+        let currentlyReading
+        let wantToRead
+        let read
         
         return(
            
@@ -31,7 +34,7 @@ class ListBooks extends Component {
                         <h2 className="bookshelf-title">Currently Reading</h2>
                         <div className="bookshelf-books">
                         
-                        {books.map((book) => {
+                        {currentlyReading = books.map((book) => {
                         if(book.shelf === "currentlyReading"){                                                     
                             return (
                                 
@@ -56,14 +59,17 @@ class ListBooks extends Component {
                                 </div>
                             </li>
                             </ol>
-                        )}})}
+                                )
+                            }
+                            return currentlyReading
+                        })}
                     </div>
                     </div>
 
                     <div className="bookshelf">
                         <h2 className="bookshelf-title">Want to Read</h2>
                         <div className="bookshelf-books">
-                        {books.map((book) => {
+                        {wantToRead = books.map((book) => {
                         if(book.shelf === "wantToRead"){
                             return (
                         <ol className="books-grid" key={book.id}>
@@ -90,14 +96,16 @@ class ListBooks extends Component {
                         </li>
                        </ol>
                     
-                        )}})}
+                        )}
+                        return wantToRead 
+                        })}
                     </div>
                     </div>
 
                     <div className="bookshelf">
                         <h2 className="bookshelf-title">Read</h2>
                         <div className="bookshelf-books">
-                        {books.map((book) => {
+                        {read = books.map((book) => {
                         if(book.shelf === "read"){
                             return (
                         <ol className="books-grid" key={book.id}>
@@ -124,7 +132,9 @@ class ListBooks extends Component {
                         </li>
                        </ol>
                     
-                        )}})}
+                        )}
+                        return read
+                        })}
                     </div>
                     </div>
 

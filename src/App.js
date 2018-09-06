@@ -37,35 +37,51 @@ class BooksApp extends React.Component {
       })
     }
 
-   
+    checkShelf = (item) => {
+      item.shelf = "none"
+      this.state.books.map(b => {
+        if(b.id === item.id){
+           if(item.hasOwnProperty('shelf')){
+             item.shelf = b.shelf
+            }
+          }          
+       return b
+      })
+    }
     
     searchBooks = (query) => {
       let newBooks = []
 
       BooksAPI.search(query).then((books) => {
-
-        books && books.length > 0 ?
-          books.map(b => {
-            b.hasOwnProperty('imageLinks') ?
-              true : b.imageLinks = {
+        if(books && books.length > 0) {
+         newBooks = books.map(b => {
+            if(!b.hasOwnProperty('imageLinks')){
+              b.imageLinks = {
                 thumbnail: 'https://images.pexels.com/photos/1166657/pexels-photo-1166657.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
               }
-          }) ?
-          // go through both arrays and filter out the ID's that match, return new array without the matches  
-          newBooks = books.filter(b => !this.state.books.find(b2 => b.id === b2.id)) : '' : ''
-        this.setState({
-          search: newBooks
+            }             
+            return b
+          }).map(item => {
+            this.checkShelf(item)
+            return item
+          })                  
+          this.setState({ search: newBooks })
+        }
         })
-      })
-    }
+       }
+       
 
     getAllBooks = () => {
       BooksAPI.getAll().then((books) => {
         books.map(b => {
-          b.hasOwnProperty('imageLinks') ?
+          let propertyCheck = b.hasOwnProperty('imageLinks') ?
             true : b.imageLinks = {
               thumbnail: 'https://images.pexels.com/photos/1166657/pexels-photo-1166657.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
             }
+          return {
+            books: books,
+            propertyCheck: propertyCheck
+          }
         })
         this.setState({
           books
@@ -76,7 +92,7 @@ class BooksApp extends React.Component {
       this.setState({
         search: []
       })
-    }   
+    }
 
     render() {
    
@@ -118,8 +134,7 @@ class BooksApp extends React.Component {
             search: []
           })
         }
-      }  
-      
+      }      
       />    )}/>
     
     </div>
